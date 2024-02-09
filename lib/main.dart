@@ -7,6 +7,7 @@ import 'package:practica_flutter/Paginas/registro.dart';
 void main() async {
   await Hive.initFlutter();
   var box = await Hive.openBox('usuarios');
+  var box2 = await Hive.openBox('foro_posts');
 
   runApp(const Init());
 }

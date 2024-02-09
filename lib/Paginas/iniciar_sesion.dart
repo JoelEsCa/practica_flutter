@@ -1,15 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:practica_flutter/datos/db.dart';
 import 'package:practica_flutter/widgets/InputText.dart';
 
 class IniciarSesion extends StatefulWidget {
-
   IniciarSesion({super.key});
 
   @override
   State<IniciarSesion> createState() => _IniciarSesionState();
-  
 }
 
 class _IniciarSesionState extends State<IniciarSesion> {
@@ -17,10 +17,9 @@ class _IniciarSesionState extends State<IniciarSesion> {
 
   TextEditingController passwordController = TextEditingController();
 
- final _usuariosBox = Hive.box('usuarios');
+  final _usuariosBox = Hive.box('usuarios');
 
- BaseDeDatosUsuarios baseDeDatosUsuarios = BaseDeDatosUsuarios();
-
+  BaseDeDatosUsuarios baseDeDatosUsuarios = BaseDeDatosUsuarios();
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +39,42 @@ class _IniciarSesionState extends State<IniciarSesion> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              InputText( icono: const Icon(Icons.email), label: "Correo Electrónico", controller: emailController,),
+              InputText(
+                icono: const Icon(Icons.email),
+                label: "Correo Electrónico",
+                controller: emailController,
+              ),
               const SizedBox(height: 16.0),
-              InputText(icono: const Icon(Icons.lock), label: "Contraseña", controller: passwordController, obscure: true,),
+              InputText(
+                icono: const Icon(Icons.lock),
+                label: "Contraseña",
+                controller: passwordController,
+                obscure: true,
+              ),
               const SizedBox(height: 24.0),
               ElevatedButton(
-                onPressed: () {
-                  print(baseDeDatosUsuarios.autenticarUsuario(emailController.text, passwordController.text.trim()));
+                onPressed: () async {
+                  bool inicio = baseDeDatosUsuarios.autenticarUsuario(
+                      emailController.text, passwordController.text.trim());
+                  if (inicio) {
+                    baseDeDatosUsuarios.iniciarSesion(emailController.text);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Inició sesión exitoso. Redirigiendo...'),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                    await Future.delayed(const Duration(seconds: 2));
+                    Navigator.pushNamed(context, '/principal');
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content:
+                            Text('Correo electrónico o contraseña incorrectos'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   primary: Colors.cyan,

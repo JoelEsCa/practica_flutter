@@ -56,8 +56,29 @@ class Registro extends StatelessWidget {
               ),
               const SizedBox(height: 24.0),
               ElevatedButton(
-                onPressed: () {
-                  baseDeDatosUsuarios.registrarUsuario(emailController.text, passwordController.text);
+                onPressed: () async {
+                  if (baseDeDatosUsuarios.existeUsuario(emailController.text)) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content:
+                            Text('El correo electrónico ya está registrado'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                    return;
+                  } else {
+                    baseDeDatosUsuarios.registrarUsuario(emailController.text,
+                        passwordController.text, nameController.text);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            'Registro exitoso. Redirigiendo a página principal...'),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                    await Future.delayed(const Duration(seconds: 2));
+                    Navigator.pushNamed(context, '/principal');
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   primary: Colors.cyan,
