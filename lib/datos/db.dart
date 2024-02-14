@@ -1,11 +1,15 @@
+import 'package:crypto/crypto.dart';
 import 'package:hive/hive.dart';
+import 'dart:convert';
+import 'dart:typed_data';
+import 'dart:math';
 
 class BaseDeDatosUsuarios {
   final _usuariosBox = Hive.box('usuarios');
 
   void CrearDatosIniciales() {
     _usuariosBox.put('admin', {
-      'contrasena': 'admin',
+      'contrasena': sha256.convert(utf8.encode('admin')).toString(),
       'nombre_completo': 'Administrador'
     }); // Creamos el usuario administrador
     _usuariosBox.put('sesion_loged',
@@ -45,8 +49,10 @@ class BaseDeDatosUsuarios {
     bool x = false;
 
     if (contrasena == verificarContrasena) {
-      _usuariosBox.put(correoElectronico,
-          {'contrasena': contrasena, 'nombre_completo': nombreCompleto});
+      _usuariosBox.put(correoElectronico, {
+        'contrasena': sha256.convert(utf8.encode(contrasena)).toString(),
+        'nombre_completo': nombreCompleto
+      });
       x = true;
     }
     return x;
@@ -55,6 +61,7 @@ class BaseDeDatosUsuarios {
   // Método para autenticar usuario
   bool autenticarUsuario(String correoElectronico, String contrasena) {
     var usuario = _usuariosBox.get(correoElectronico);
+    print(contrasena);
     return usuario != null && usuario['contrasena'] == contrasena;
   }
 

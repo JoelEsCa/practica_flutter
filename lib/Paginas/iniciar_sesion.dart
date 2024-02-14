@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:practica_flutter/datos/db.dart';
@@ -55,7 +57,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
               ElevatedButton(
                 onPressed: () async {
                   bool inicio = baseDeDatosUsuarios.autenticarUsuario(
-                      emailController.text, passwordController.text.trim());
+                      emailController.text, sha256.convert(utf8.encode(passwordController.text.trim())).toString());
                   if (inicio) {
                     baseDeDatosUsuarios.iniciarSesion(emailController.text);
                     ScaffoldMessenger.of(context).showSnackBar(
