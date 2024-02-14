@@ -40,10 +40,16 @@ class BaseDeDatosUsuarios {
   }
 
   // Método para registrar un nuevo usuario
-  void registrarUsuario(
-      String correoElectronico, String contrasena, String nombreCompleto) {
-    _usuariosBox.put(correoElectronico,
-        {'contrasena': contrasena, 'nombre_completo': nombreCompleto});
+  bool registrarUsuario(String correoElectronico, String contrasena,
+      String nombreCompleto, String verificarContrasena) {
+    bool x = false;
+
+    if (contrasena == verificarContrasena) {
+      _usuariosBox.put(correoElectronico,
+          {'contrasena': contrasena, 'nombre_completo': nombreCompleto});
+      x = true;
+    }
+    return x;
   }
 
   // Método para autenticar usuario

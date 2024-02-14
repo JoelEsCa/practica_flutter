@@ -59,25 +59,45 @@ class Registro extends StatelessWidget {
                 onPressed: () async {
                   if (baseDeDatosUsuarios.existeUsuario(emailController.text)) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content:
-                            Text('El correo electrónico ya está registrado'),
+                      SnackBar(
+                        action: SnackBarAction(
+                            label: 'Iniciar Sesión',
+                            onPressed: () =>
+                                Navigator.pushNamed(context, "/iniciarSesion")),
+                        content: const Text(
+                            'El correo electrónico ya está registrado'),
                         backgroundColor: Colors.red,
                       ),
                     );
                     return;
                   } else {
-                    baseDeDatosUsuarios.registrarUsuario(emailController.text,
-                        passwordController.text, nameController.text);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                            'Registro exitoso. Redirigiendo a página principal...'),
-                        backgroundColor: Colors.green,
-                      ),
-                    );
-                    await Future.delayed(const Duration(seconds: 2));
-                    Navigator.pushNamed(context, '/principal');
+                    if (baseDeDatosUsuarios.registrarUsuario(
+                        emailController.text,
+                        passwordController.text,
+                        nameController.text,
+                        confirmPasswordController.text)) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                              'Registro exitoso. Redirigiendo a página principal...'),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                      await Future.delayed(const Duration(seconds: 2));
+                      Navigator.pop(context);
+                      Navigator.pushNamed(context, '/principal');
+                    } else {
+                      passwordController.clear();
+                      confirmPasswordController.clear();
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                              'Las contraseñas no coinciden. Intente de nuevo.'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
                   }
                 },
                 style: ElevatedButton.styleFrom(
