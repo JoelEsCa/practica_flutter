@@ -29,6 +29,16 @@ class BaseDeDatosUsuarios {
     return _usuariosBox.get('sesion_loged');
   }
 
+  bool esAdmin() {
+    bool x = false;
+    if (estadoSesion()) {
+      if (_usuariosBox.get('sesion_mail') == "admin") {
+        x = true;
+      }
+    }
+    return x;
+  }
+
   // Método para registrar un nuevo usuario
   void registrarUsuario(
       String correoElectronico, String contrasena, String nombreCompleto) {
@@ -42,8 +52,7 @@ class BaseDeDatosUsuarios {
     return usuario != null && usuario['contrasena'] == contrasena;
   }
 
-  //Método de manejo de sesión
-
+  //Métodos de manejo de sesión
   void iniciarSesion(String mail) {
     _usuariosBox.put('sesion_loged', true);
     _usuariosBox.put('sesion_mail', mail);
@@ -70,14 +79,47 @@ class BaseDeDatosPosts {
 
   void CrearDatosIniciales() {
     listaPosts = [
-      ["admin", "Hola a todos", "Hola, soy el administrador del foro"],
-      ["admin", "Reglas", "Por favor, respetar las reglas del foro"],
+      [
+        "Administrador",
+        "Hola a todos",
+        "Hola, soy el administrador del foro",
+        "1 de enero de 2024"
+      ],
+      [
+        "Administrador",
+        "Reglas",
+        "Por favor, respetar las reglas del foro",
+        "1 de enero de 2024"
+      ],
     ];
     actualizarDatos();
   }
 
   void agregarPost(String nombre, String titulo, String texto) {
-    listaPosts.add([nombre, titulo, texto]);
+    //Sacamos la fecha del momento
+    DateTime now = DateTime.now();
+
+    //Hacemos una lista con los meses para transformar el número al nombre del mes correspondiente
+    List<String> months = [
+      'enero',
+      'febrero',
+      'marzo',
+      'abril',
+      'mayo',
+      'junio',
+      'julio',
+      'agosto',
+      'septiembre',
+      'octubre',
+      'noviembre',
+      'diciembre'
+    ];
+
+    String fecha =
+        '${now.day.toString()} de ${months[now.month - 1]} de ${now.year.toString()}';
+
+    listaPosts.add([nombre, titulo, texto, fecha]);
+
     actualizarDatos();
   }
 }

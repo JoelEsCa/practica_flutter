@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:practica_flutter/datos/db.dart';
 
 class ForoPosts extends StatelessWidget {
   final String nombre;
   final String titulo;
   final String textopost;
+  final String fecha;
+  final bool admin;
+  final void Function()? funcion_borrar;
 
-  const ForoPosts(
+  ForoPosts(
       {Key? key,
       required this.nombre,
       required this.titulo,
-      required this.textopost})
+      required this.textopost,
+      required this.fecha,
+      required this.admin,
+      required this.funcion_borrar})
       : super(key: key);
+
+  BaseDeDatosPosts baseDeDatosPosts = BaseDeDatosPosts();
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +39,15 @@ class ForoPosts extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 nombre,
-                style: const TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 15),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 titulo,
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
             Padding(
@@ -45,8 +55,28 @@ class ForoPosts extends StatelessWidget {
               child: Text(
                 textopost,
                 style: const TextStyle(fontSize: 16),
-                textAlign: TextAlign.center,
               ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Visibility(
+                  visible: admin,
+                  child: ElevatedButton(
+                    onPressed: funcion_borrar,
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.red,
+                      shape: const CircleBorder(),
+                    ),
+                    child: const Icon(Icons.delete, color: Colors.white),
+                  ),
+                ),
+                Text(
+                  'Publicado el $fecha',
+                  style: const TextStyle(
+                      fontSize: 12, color: Color.fromARGB(255, 100, 99, 99)),
+                ),
+              ],
             ),
           ],
         ),
