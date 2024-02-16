@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -79,7 +77,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.cyan,
+                  backgroundColor: Colors.cyan,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
                 ),

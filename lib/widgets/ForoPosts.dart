@@ -7,7 +7,7 @@ class ForoPosts extends StatelessWidget {
   final String textopost;
   final String fecha;
   final bool admin;
-  final void Function()? funcion_borrar;
+  final void Function()? funcionBorrar;
 
   ForoPosts(
       {Key? key,
@@ -16,7 +16,7 @@ class ForoPosts extends StatelessWidget {
       required this.textopost,
       required this.fecha,
       required this.admin,
-      required this.funcion_borrar})
+      required this.funcionBorrar})
       : super(key: key);
 
   BaseDeDatosPosts baseDeDatosPosts = BaseDeDatosPosts();
@@ -63,9 +63,9 @@ class ForoPosts extends StatelessWidget {
                 Visibility(
                   visible: admin,
                   child: ElevatedButton(
-                    onPressed: funcion_borrar,
+                    onPressed: funcionBorrar,
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.red,
+                      backgroundColor: Colors.red,
                       shape: const CircleBorder(),
                     ),
                     child: const Icon(Icons.delete, color: Colors.white),

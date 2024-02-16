@@ -1,13 +1,11 @@
 import 'package:crypto/crypto.dart';
 import 'package:hive/hive.dart';
 import 'dart:convert';
-import 'dart:typed_data';
-import 'dart:math';
 
 class BaseDeDatosUsuarios {
   final _usuariosBox = Hive.box('usuarios');
 
-  void CrearDatosIniciales() {
+  void crearDatosIniciales() {
     _usuariosBox.put('admin', {
       'contrasena': sha256.convert(utf8.encode('admin')).toString(),
       'nombre_completo': 'Administrador'
@@ -90,7 +88,7 @@ class BaseDeDatosPosts {
     _BoxPosts.put('foro_posts', listaPosts);
   }
 
-  void CrearDatosIniciales() {
+  void crearDatosIniciales() {
     listaPosts = [
       [
         "Administrador",

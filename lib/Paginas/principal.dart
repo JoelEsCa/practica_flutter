@@ -19,26 +19,26 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
 
   TextEditingController textopost = TextEditingController();
   TextEditingController titulopost = TextEditingController();
-  String nombre_completo_usuario_sesion = '';
+  String nomreCompletoUsuarioSesion = '';
 
   @override
   void initState() {
     super.initState();
     if (_usuariosBox.isEmpty) {
-      baseDeDatosUsuarios.CrearDatosIniciales();
+      baseDeDatosUsuarios.crearDatosIniciales();
     }
     if (_BoxPosts.isEmpty) {
-      baseDeDatosPosts.CrearDatosIniciales();
+      baseDeDatosPosts.crearDatosIniciales();
     } else {
       baseDeDatosPosts.cargarDatos();
       print(baseDeDatosPosts.listaPosts.length);
     }
 
     if (baseDeDatosUsuarios.estadoSesion()) {
-      nombre_completo_usuario_sesion = baseDeDatosUsuarios
+      nomreCompletoUsuarioSesion = baseDeDatosUsuarios
           .cargarUsuario(_usuariosBox.get('sesion_mail'))?['nombre_completo'];
     } else {
-      nombre_completo_usuario_sesion = "No logeado";
+      nomreCompletoUsuarioSesion = "No logeado";
     }
   }
 
@@ -70,7 +70,7 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          nombre_completo_usuario_sesion,
+                          nomreCompletoUsuarioSesion,
                           style: const TextStyle(fontSize: 15),
                         ),
                       ),
@@ -123,7 +123,7 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
                                 } else {
                                   setState(() {
                                     baseDeDatosPosts.agregarPost(
-                                        nombre_completo_usuario_sesion,
+                                        nomreCompletoUsuarioSesion,
                                         titulopost.text,
                                         textopost.text);
 
@@ -169,13 +169,14 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
                                   .asMap() //Convertimos la lista en un mapa
                                   .entries // Sacamos las claves
                                   .map((entry) {
-                            //Mapeamos
                             final post = entry.value;
 
+                            /** Testing por pantalla 
                             print('Inicializando post');
                             print('titulo: ${post[1]}');
                             print('Indice: ${entry.key}');
                             print('es admin: ${baseDeDatosUsuarios.esAdmin()}');
+                            */
 
                             return ForoPosts(
                               nombre: post[0],
@@ -183,7 +184,7 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
                               textopost: post[2],
                               fecha: post[3],
                               admin: baseDeDatosUsuarios.esAdmin(),
-                              funcion_borrar: () {
+                              funcionBorrar: () {
                                 setState(() {
                                   baseDeDatosPosts.listaPosts
                                       .removeAt(entry.key);
@@ -227,7 +228,7 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Nombre: $nombre_completo_usuario_sesion',
+                          'Nombre: $nomreCompletoUsuarioSesion',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
